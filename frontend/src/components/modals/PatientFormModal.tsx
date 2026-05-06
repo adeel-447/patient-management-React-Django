@@ -31,6 +31,9 @@ export function PatientFormModal(props: Props) {
       if (!firstName.trim() || !lastName.trim()) {
         throw new Error("First and last name are required.");
       }
+      if (!dob) {
+        throw new Error("Date of birth is required.");
+      }
       const normalizedEmail = email.trim().toLowerCase();
       if (normalizedEmail) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,7 +44,7 @@ export function PatientFormModal(props: Props) {
       const body: PatientInput = {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
-        date_of_birth: dob || null,
+        date_of_birth: dob,
         email: normalizedEmail,
         phone,
       };
@@ -83,8 +86,8 @@ export function PatientFormModal(props: Props) {
             </label>
           </div>
           <label>
-            Date of birth
-            <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+            Date of birth *
+            <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} required />
           </label>
           <label>
             Email

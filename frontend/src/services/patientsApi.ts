@@ -24,9 +24,32 @@ export type Patient = {
 export type PatientInput = {
   first_name: string;
   last_name: string;
-  date_of_birth: string | null;
+  date_of_birth: string;
   email: string;
   phone: string;
+};
+
+export type Clinician = {
+  id: number;
+  first_name: string;
+  last_name: string;
+};
+
+export type AppointmentInput = {
+  patient: number;
+  scheduled_at: string;
+  notes: string;
+  clinicians: number[];
+};
+
+export type Appointment = {
+  id: number;
+  patient: number;
+  scheduled_at: string;
+  notes: string;
+  clinicians: number[];
+  clinician_names: string[];
+  created_at: string;
 };
 
 export type PatientListResponse = {
@@ -49,7 +72,7 @@ export const patientsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Patient"],
+  tagTypes: ["Patient", "Appointment", "Clinician"],
   endpoints: (builder) => ({
     getPatients: builder.query<PatientListResponse, { page?: number; search?: string } | void>({
       query: (params) => {
@@ -92,6 +115,28 @@ export const patientsApi = createApi({
         { type: "Patient", id: "LIST" },
       ],
     }),
+    getClinicians: builder.query<Clinician[], void>({
+      query: () => "clinicians/",
+      transformResponse: (response: { results?: Clinician[] } | Clinician[]) =>
+        Array.isArray(response) ? response : response.results ?? [],
+      providesTags: [{ type: "Clinician", id: "LIST" }],
+    }),
+    createAppointment: builder.mutation<Appointment, AppointmentInput>({
+      query: (body) => ({ url: "appointments/", method: "POST", body }),
+      invalidatesTags: (_r, _e, { patient }) => [
+        { type: "Patient", id: patient },
+        { type: "Patient", id: "LIST" },
+        { type: "Appointment", id: "LIST" },
+      ],
+    }),
+    deleteAppointment: builder.mutation<void, { id: number; patientId: number }>({
+      query: ({ id }) => ({ url: `appointments/${id}/`, method: "DELETE" }),
+      invalidatesTags: (_r, _e, { patientId }) => [
+        { type: "Patient", id: patientId },
+        { type: "Patient", id: "LIST" },
+        { type: "Appointment", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -100,4 +145,7 @@ export const {
   useCreatePatientMutation,
   useUpdatePatientMutation,
   useDeletePatientMutation,
+  useGetCliniciansQuery,
+  useCreateAppointmentMutation,
+  useDeleteAppointmentMutation,
 } = patientsApi;

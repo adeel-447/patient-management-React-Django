@@ -16,6 +16,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
 class PatientSerializer(serializers.ModelSerializer):
     appointments = AppointmentSerializer(many=True, read_only=True)
+    date_of_birth = serializers.DateField(required=True)
 
     class Meta:
         model = Patient

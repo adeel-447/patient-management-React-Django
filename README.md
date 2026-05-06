@@ -56,7 +56,7 @@ To run with verbose output:
 USE_SQLITE=1 python manage.py test --verbosity=2
 ```
 
-61 tests cover models, views, serializers, middleware, management commands, admin, and auth (80-90% coverage).
+62 tests cover models, views, serializers, middleware, management commands, admin, and auth (80-90% coverage).
 
 ## API
 
@@ -67,6 +67,9 @@ USE_SQLITE=1 python manage.py test --verbosity=2
 | POST | `/api/auth/token/refresh/` | Refresh |
 | GET/POST | `/api/patients/` | List / create (scoped to user’s clinic) |
 | GET/PATCH/DELETE | `/api/patients/<id>/` | Detail / update / delete |
+| GET/POST | `/api/appointments/` | List / create appointments |
+| GET/PATCH/DELETE | `/api/appointments/<id>/` | Detail / update / delete appointment |
+| GET | `/api/clinicians/` | List clinicians for user's clinic |
 
 ## Layout
 

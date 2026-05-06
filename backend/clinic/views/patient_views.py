@@ -9,7 +9,7 @@ from clinic.serializers import PatientSerializer
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientSerializer
     filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ["first_name", "last_name", "email", "phone"]
+    search_fields = ["first_name", "last_name", "email", "phone", "date_of_birth"]
     ordering_fields = ["last_name", "first_name", "created_at", "updated_at"]
     ordering = ["last_name", "first_name"]
 

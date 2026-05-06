@@ -7,6 +7,7 @@ type Props = {
   busy: boolean;
   onEdit: (p: Patient) => void;
   onDeleteRequest: (p: Patient) => void;
+  onAddAppointment: (p: Patient) => void;
 };
 
 export function PatientTable(props: Props) {
@@ -65,6 +66,9 @@ export function PatientTable(props: Props) {
                 )}
               </td>
               <td className="actions">
+                <Button variant="link" onClick={() => props.onAddAppointment(p)}>
+                  + Appt
+                </Button>
                 <Button variant="link" onClick={() => props.onEdit(p)}>
                   Edit
                 </Button>

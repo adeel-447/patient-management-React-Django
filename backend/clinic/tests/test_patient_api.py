@@ -154,19 +154,19 @@ class PatientApiTests(APITestCase):
         self.assertEqual(patient.clinic_id, self.clinic_a.id)
 
     def test_create_patient_without_optional_fields(self):
-        payload = {"first_name": "Min", "last_name": "Fields"}
+        payload = {"first_name": "Min", "last_name": "Fields", "date_of_birth": "1995-05-05"}
         response = self.client.post(reverse("patient-list"), payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["email"], "")
         self.assertEqual(response.data["phone"], "")
-        self.assertIsNone(response.data["date_of_birth"])
+        self.assertEqual(response.data["date_of_birth"], "1995-05-05")
 
     def test_create_patient_user_without_clinic_gets_403(self):
         no_clinic_user = User.objects.create_user(
             username="no-clinic", password="testpass123", clinic=None
         )
         self.client.force_authenticate(no_clinic_user)
-        payload = {"first_name": "Nope", "last_name": "NoClinic"}
+        payload = {"first_name": "Nope", "last_name": "NoClinic", "date_of_birth": "1990-01-01"}
         response = self.client.post(reverse("patient-list"), payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -274,7 +274,7 @@ class PatientApiTests(APITestCase):
         self.assertIn("last_name", response.data)
 
     def test_name_validation_strips_whitespace(self):
-        payload = {"first_name": "  Valid  ", "last_name": "  Name  "}
+        payload = {"first_name": "  Valid  ", "last_name": "  Name  ", "date_of_birth": "1990-01-01"}
         response = self.client.post(reverse("patient-list"), payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["first_name"], "Valid")
@@ -287,7 +287,7 @@ class PatientApiTests(APITestCase):
         self.assertIn("phone", response.data)
 
     def test_phone_validation_empty_is_allowed(self):
-        payload = {"first_name": "Phone", "last_name": "Empty", "phone": ""}
+        payload = {"first_name": "Phone", "last_name": "Empty", "phone": "", "date_of_birth": "1990-01-01"}
         response = self.client.post(reverse("patient-list"), payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -306,15 +306,22 @@ class PatientApiTests(APITestCase):
             "first_name": "Email",
             "last_name": "Lower",
             "email": "Test@Example.COM",
+            "date_of_birth": "1990-01-01",
         }
         response = self.client.post(reverse("patient-list"), payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["email"], "test@example.com")
 
     def test_email_empty_is_allowed(self):
-        payload = {"first_name": "No", "last_name": "Email", "email": ""}
+        payload = {"first_name": "No", "last_name": "Email", "email": "", "date_of_birth": "1990-01-01"}
         response = self.client.post(reverse("patient-list"), payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_patient_missing_dob_returns_400(self):
+        payload = {"first_name": "No", "last_name": "Dob"}
+        response = self.client.post(reverse("patient-list"), payload, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("date_of_birth", response.data)
 
 
 class PatientApiAuthTests(APITestCase):

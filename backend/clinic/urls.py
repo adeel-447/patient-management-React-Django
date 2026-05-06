@@ -2,10 +2,12 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from clinic.views import PatientViewSet, health
+from clinic.views import AppointmentViewSet, ClinicianViewSet, PatientViewSet, health
 
 router = DefaultRouter()
 router.register("patients", PatientViewSet, basename="patient")
+router.register("appointments", AppointmentViewSet, basename="appointment")
+router.register("clinicians", ClinicianViewSet, basename="clinician")
 
 urlpatterns = [
     path("health/", health, name="health"),
