@@ -87,6 +87,10 @@ code {
   flex-wrap: wrap;
 }
 
+.toolbar-right {
+  justify-content: flex-end;
+}
+
 .btn {
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.04);
@@ -110,6 +114,14 @@ code {
   background: linear-gradient(180deg, var(--accent), var(--accent-dim));
   border-color: transparent;
   color: white;
+}
+
+.btn.primary.danger {
+  background: linear-gradient(180deg, var(--danger), #dc2626);
+}
+
+.btn.primary.danger:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ef4444, #b91c1c);
 }
 
 .btn.secondary {
@@ -332,4 +344,21 @@ code {
 .pagination-info {
   font-size: 0.875rem;
   color: var(--muted);
+}
+
+.form select {
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  font: inherit;
+}
+
+.form select[multiple] {
+  min-height: 80px;
+}
+
+.form select option {
+  padding: 0.35rem 0.5rem;
 }

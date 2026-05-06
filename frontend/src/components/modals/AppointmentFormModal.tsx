@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import {
@@ -23,10 +23,9 @@ export function AppointmentFormModal(props: Props) {
   const [selectedClinicians, setSelectedClinicians] = useState<number[]>([]);
   const [err, setErr] = useState<string | null>(null);
 
-  const toggleClinician = (id: number) => {
-    setSelectedClinicians((prev) =>
-      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
-    );
+  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selected = Array.from(e.target.selectedOptions, (opt) => Number(opt.value));
+    setSelectedClinicians(selected);
   };
 
   const submit = async (e: FormEvent) => {
@@ -87,25 +86,25 @@ export function AppointmentFormModal(props: Props) {
               placeholder="Optional notes..."
             />
           </label>
-          <fieldset className="clinician-fieldset">
-            <legend>Clinicians (select one or more)</legend>
-            {loadingClinicians && <p className="muted">Loading clinicians…</p>}
-            {clinicians.length === 0 && !loadingClinicians && (
-              <p className="muted">No clinicians found for your clinic.</p>
+          <label>
+            Clinicians (hold Ctrl/Cmd to select multiple)
+            {loadingClinicians ? (
+              <p className="muted">Loading clinicians…</p>
+            ) : (
+              <select
+                multiple
+                value={selectedClinicians.map(String)}
+                onChange={handleSelectChange}
+                size={Math.min(clinicians.length || 1, 5)}
+              >
+                {clinicians.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.first_name} {c.last_name}
+                  </option>
+                ))}
+              </select>
             )}
-            <div className="checkbox-group">
-              {clinicians.map((c) => (
-                <label key={c.id} className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={selectedClinicians.includes(c.id)}
-                    onChange={() => toggleClinician(c.id)}
-                  />
-                  {c.first_name} {c.last_name}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          </label>
           {err && <p className="error">{err}</p>}
           <div className="modal-actions">
             <Button variant="secondary" onClick={props.onClose}>

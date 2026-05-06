@@ -50,7 +50,7 @@ export function DeletePatientModal(props: Props) {
             <Button variant="secondary" onClick={props.onClose} disabled={props.deleting}>
               Cancel
             </Button>
-            <Button type="submit" variant="primary" disabled={props.deleting}>
+            <Button type="submit" variant="primary" danger disabled={props.deleting}>
               {props.deleting ? "Deleting…" : "Delete"}
             </Button>
           </div>

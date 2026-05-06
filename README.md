@@ -6,15 +6,15 @@ Full-stack clinic **patient** CRUD: staff sign in, then list, create, update, an
 
 | Login | Patient List |
 |:---:|:---:|
-| ![Login](docs/screenshots/login.png) | ![Patient List](docs/screenshots/patient-list.png) |
+| ![Login](screenshots/login.png) | ![Patient List](screenshots/patient-list.png) |
 
 | Add Patient | Add Appointment | Delete Patient |
 |:---:|:---:|:---:|
-| ![Add Patient](docs/screenshots/add-patient.png) | ![Add Appointment](docs/screenshots/add-appointment.png) | ![Delete Patient](docs/screenshots/delete-patient.png) |
+| ![Add Patient](screenshots/add-patient.png) | ![Add Appointment](screenshots/add-appointment.png) | ![Delete Patient](screenshots/delete-patient.png) |
 
 | Pagination | Django Admin |
 |:---:|:---:|
-| ![Pagination](docs/screenshots/pagination.png) | ![Admin](docs/screenshots/admin.png) |
+| ![Pagination](screenshots/pagination.png) | ![Admin](screenshots/admin.png) |
 
 ## Run with Docker
 

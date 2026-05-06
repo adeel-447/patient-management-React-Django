@@ -10,21 +10,21 @@ type Props = {
 
 export function PatientToolbar(props: Props) {
   return (
-    <div className="toolbar">
+    <div className="toolbar toolbar-right">
       <input
         placeholder="Search patients"
         value={props.search}
         onChange={(e) => props.onSearchChange(e.target.value)}
       />
-      <Button variant="primary" onClick={props.onAddPatient}>
-        Add patient
-      </Button>
       <Button
         variant="secondary"
         onClick={() => void props.onRefresh()}
         disabled={props.isFetching}
       >
         Refresh
+      </Button>
+      <Button variant="primary" onClick={props.onAddPatient}>
+        Add patient
       </Button>
     </div>
   );
