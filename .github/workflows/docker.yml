@@ -1,0 +1,51 @@
+name: Docker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Backend unit tests
+        run: |
+          cd backend
+          python -m venv .venv
+          . .venv/bin/activate
+          pip install -r requirements.txt
+          USE_SQLITE=1 python manage.py test
+
+      - name: Build images
+        run: docker compose build
+
+      - name: Start stack
+        run: docker compose up -d
+
+      - name: Wait for API
+        run: |
+          for i in $(seq 1 40); do
+            if curl -fsS http://localhost:8000/api/health/; then
+              echo "API is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not become ready in time"
+          docker compose logs
+          exit 1
+
+      - name: Show running containers
+        if: always()
+        run: docker compose ps
+
+      - name: Stop stack
+        if: always()
+        run: docker compose down -v
