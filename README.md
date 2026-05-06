@@ -2,6 +2,20 @@
 
 Full-stack clinic **patient** CRUD: staff sign in, then list, create, update, and delete patients for their own clinic. The backend uses split **models / views / serializers**; the frontend uses **`src/`** (`app/`, `components/` including `components/modals/`, `hooks/`, `store/`, `services/` for RTK Query APIs) with **Redux Toolkit** and **RTK Query**.
 
+## Screenshots
+
+| Login | Patient List |
+|:---:|:---:|
+| ![Login](docs/screenshots/login.png) | ![Patient List](docs/screenshots/patient-list.png) |
+
+| Add Patient | Add Appointment | Delete Patient |
+|:---:|:---:|:---:|
+| ![Add Patient](docs/screenshots/add-patient.png) | ![Add Appointment](docs/screenshots/add-appointment.png) | ![Delete Patient](docs/screenshots/delete-patient.png) |
+
+| Pagination | Django Admin |
+|:---:|:---:|
+| ![Pagination](docs/screenshots/pagination.png) | ![Admin](docs/screenshots/admin.png) |
+
 ## Run with Docker
 
 ```bash
