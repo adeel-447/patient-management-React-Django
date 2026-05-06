@@ -42,6 +42,22 @@ npm run dev
 
 Open http://localhost:5173. Leave `VITE_API_URL` unset so `/api` is proxied to the Django server.
 
+## Running Tests
+
+```bash
+cd backend
+source .venv/bin/activate
+USE_SQLITE=1 python manage.py test
+```
+
+To run with verbose output:
+
+```bash
+USE_SQLITE=1 python manage.py test --verbosity=2
+```
+
+61 tests cover models, views, serializers, middleware, management commands, admin, and auth (80-90% coverage).
+
 ## API
 
 | Method | Path | Description |
